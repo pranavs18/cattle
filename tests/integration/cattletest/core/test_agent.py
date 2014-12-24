@@ -4,7 +4,7 @@ import time
 
 # sim_context is included to ensure that the simulator context creates
 # the first agent and thus the first external simulator pool
-def test_agent_create(admin_client, sim_context):
+def test_agent_create(admin_client, internal_test_client, sim_context):
     client = admin_client
 
     uri = "sim://" + str(time.time())
@@ -12,7 +12,7 @@ def test_agent_create(admin_client, sim_context):
     count = len(client.list_agent())
     account_count = len(client.list_account())
     cred_count = len(client.list_credential())
-    agent = client.create_agent(uri=uri)
+    agent = internal_test_client.create_agent(uri=uri)
 
     assert agent.state == "registering"
     assert agent.uri == uri
