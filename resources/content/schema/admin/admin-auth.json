@@ -134,6 +134,7 @@
         "externalHandler.timeoutMillis" : "cru",
         "externalHandler.processNames" : "cr",
 
+        "githubconfig" : "cr",
         "githubconfig.enabled": "cr",
         "githubconfig.clientId": "cr",
         "githubconfig.allowedUsers": "cr",
