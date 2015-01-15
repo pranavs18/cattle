@@ -66,9 +66,8 @@ def test_pagination_include(admin_client, sim_context):
     containers = []
     host = sim_context['host']
     for i in range(5):
-        c = admin_client.create_container(
-            imageUuid=sim_context['imageUuid'],
-            name=name, requestedHostId=host.id)
+        c = admin_client.create_container(imageUuid=sim_context['imageUuid'],
+                                          name=name, requestedHostId=host.id)
         containers.append(c)
         container_ids.append(c.id)
 

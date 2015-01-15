@@ -5,7 +5,6 @@ def test_host_only_no_subset(internal_test_client, client, sim_context):
     network = internal_test_client.create_host_only_network(
         hostVnetUri='docker:///', isPublic=True)
     network = internal_test_client.wait_success(network)
-    client = internal_test_client
     assert network.state == 'active'
 
     assert client.by_id_network(network.id) is not None
@@ -15,12 +14,10 @@ def test_host_only_no_subset(internal_test_client, client, sim_context):
     c = client.wait_success(c)
     assert c.state == 'running'
     assert c.primaryIpAddress is None
-
+    c = internal_test_client.reload(c)
     nics = c.nics()
     assert len(nics) == 1
     assert nics[0].network().id == network.id
-
-    c = internal_test_client.reload(c)
 
     nic = c.nics()[0]
 
@@ -46,7 +43,6 @@ def test_host_only_subnet(internal_test_client, client, sim_context):
     network = internal_test_client.create_host_only_network(
         hostVnetUri='docker:///', isPublic=True)
     network = internal_test_client.wait_success(network)
-    client = internal_test_client
     assert network.state == 'active'
 
     subnet = internal_test_client.create_subnet(networkId=network.id,
@@ -62,7 +58,7 @@ def test_host_only_subnet(internal_test_client, client, sim_context):
     assert c.state == 'running'
     assert c.primaryIpAddress is not None
     assert c.primaryIpAddress.startswith('192.168.0')
-
+    c = internal_test_client.reload(c)
     nics = c.nics()
     assert len(nics) == 1
     assert nics[0].network().id == network.id

@@ -68,7 +68,7 @@ def accounts():
     result = {}
     admin_client = _admin_client()
     for user_name in ['admin', 'agent', 'user', 'agentRegister', 'test',
-                      'readAdmin', 'internalTest']:
+                      'readAdmin', 'token', 'internalTest']:
         result[user_name] = create_user(admin_client,
                                         user_name,
                                         kind=user_name)
@@ -107,6 +107,11 @@ def admin_client(accounts):
 @pytest.fixture(scope='session')
 def internal_test_client(accounts):
     return _client_for_user('internalTest', accounts)
+
+
+@pytest.fixture(scope='session')
+def token_client(accounts):
+    return _client_for_user('token', accounts)
 
 
 @pytest.fixture(scope='session')

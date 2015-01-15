@@ -54,8 +54,7 @@ def test_inactive_agent(internal_test_client, sim_context):
     assert c.state == 'removed'
 
 
-def test_spread(admin_client, internal_test_client,
-                sim_context, sim_context2, sim_context3):
+def test_spread(internal_test_client, sim_context, sim_context2, sim_context3):
     count = 3
 
     hosts = [sim_context['host'], sim_context2['host'], sim_context3['host']]
@@ -75,11 +74,11 @@ def test_spread(admin_client, internal_test_client,
 
     containers = []
     for _ in range(len(hosts) * count):
-        c = admin_client.create_container(
+        c = internal_test_client.create_container(
             imageUuid=sim_context['imageUuid'])
         containers.append(c)
 
-    containers = wait_all_success(admin_client, containers, timeout=60)
+    containers = wait_all_success(internal_test_client, containers, timeout=60)
 
     for i, h in enumerate(hosts):
         h = internal_test_client.reload(h)
