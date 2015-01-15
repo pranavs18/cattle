@@ -405,7 +405,7 @@ def test_no_port_override(internal_test_client, docker_context):
 
 
 @if_docker
-def test_docker_volumes(client, internal_test_client, docker_context):
+def test_docker_volumes(client, admin_client, docker_context):
     uuid = TEST_IMAGE_UUID
     bind_mount_uuid = py_uuid.uuid4().hex
     bar_host_path = '/tmp/bar%s' % bind_mount_uuid
@@ -413,20 +413,20 @@ def test_docker_volumes(client, internal_test_client, docker_context):
     baz_host_path = '/tmp/baz%s' % bind_mount_uuid
     baz_bind_mount = '%s:/baz:ro' % baz_host_path
 
-    c = internal_test_client.create_container(name="volumes_test",
+    c = admin_client.create_container(name="volumes_test",
                                               imageUuid=uuid,
                                               startOnCreate=False,
                                               dataVolumes=['/foo',
                                                            bar_bind_mount,
                                                            baz_bind_mount])
 
-    c = internal_test_client.wait_success(c)
+    c = admin_client.wait_success(c)
     assert len(c.dataVolumes) == 3
     assert set(c.dataVolumes) == set(['/foo',
                                       bar_bind_mount,
                                       baz_bind_mount])
 
-    c = internal_test_client.wait_success(c.start())
+    c = admin_client.wait_success(c.start())
 
     volumes = c.volumes()
     assert len(volumes) == 1
@@ -475,15 +475,15 @@ def test_docker_volumes(client, internal_test_client, docker_context):
     assert baz_vol.isHostPath
     assert baz_host_path in baz_vol.uri
 
-    c2 = internal_test_client.create_container(name="volumes_from_test",
+    c2 = admin_client.create_container(name="volumes_from_test",
                                                imageUuid=uuid,
                                                startOnCreate=False,
                                                dataVolumesFrom=[c.id])
-    c2 = internal_test_client.wait_success(c2)
+    c2 = admin_client.wait_success(c2)
     assert len(c2.dataVolumesFrom) == 1
     assert set(c2.dataVolumesFrom) == set([c.id])
 
-    c2 = internal_test_client.wait_success(c2.start())
+    c2 = admin_client.wait_success(c2.start())
     c2_mounts = c2.mounts()
     assert len(c2_mounts) == 3
 
@@ -499,25 +499,25 @@ def test_docker_volumes(client, internal_test_client, docker_context):
     c.stop(remove=True)
     c2.stop(remove=True)
 
-    _check_path(foo_vol, True, internal_test_client)
-    foo_vol = internal_test_client.wait_success(foo_vol.deactivate())
-    foo_vol = internal_test_client.wait_success(foo_vol.remove())
-    foo_vol = internal_test_client.wait_success(foo_vol.purge())
-    _check_path(foo_vol, False, internal_test_client)
+    _check_path(foo_vol, True, admin_client)
+    foo_vol = admin_client.wait_success(foo_vol.deactivate())
+    foo_vol = admin_client.wait_success(foo_vol.remove())
+    foo_vol = admin_client.wait_success(foo_vol.purge())
+    _check_path(foo_vol, False, admin_client)
 
-    _check_path(bar_vol, True, internal_test_client)
-    bar_vol = internal_test_client.wait_success(bar_vol.deactivate())
-    bar_vol = internal_test_client.wait_success(bar_vol.remove())
-    bar_vol = internal_test_client.wait_success(bar_vol.purge())
+    _check_path(bar_vol, True, admin_client)
+    bar_vol = admin_client.wait_success(bar_vol.deactivate())
+    bar_vol = admin_client.wait_success(bar_vol.remove())
+    bar_vol = admin_client.wait_success(bar_vol.purge())
     # Host bind mount. Wont actually delete the dir on the host.
-    _check_path(bar_vol, True, internal_test_client)
+    _check_path(bar_vol, True, admin_client)
 
-    _check_path(baz_vol, True, internal_test_client)
-    baz_vol = internal_test_client.wait_success(baz_vol.deactivate())
-    baz_vol = internal_test_client.wait_success(baz_vol.remove())
-    baz_vol = internal_test_client.wait_success(baz_vol.purge())
+    _check_path(baz_vol, True, admin_client)
+    baz_vol = admin_client.wait_success(baz_vol.deactivate())
+    baz_vol = admin_client.wait_success(baz_vol.remove())
+    baz_vol = admin_client.wait_success(baz_vol.purge())
     # Host bind mount. Wont actually delete the dir on the host.
-    _check_path(baz_vol, True, internal_test_client)
+    _check_path(baz_vol, True, admin_client)
 
 
 @if_docker
@@ -586,20 +586,19 @@ def test_container_fields(client, admin_client, docker_context):
 
 
 @if_docker
-def test_docker_mount_life_cycle(client, internal_test_client, docker_context):
+def test_docker_mount_life_cycle(client, admin_client, docker_context):
     uuid = TEST_IMAGE_UUID
     bind_mount_uuid = py_uuid.uuid4().hex
     bar_host_path = '/tmp/bar%s' % bind_mount_uuid
     bar_bind_mount = '%s:/bar' % bar_host_path
 
-    c = internal_test_client.create_container(name="volumes_test",
-                                              imageUuid=uuid,
-                                              startOnCreate=False,
-                                              dataVolumes=['/foo',
-                                                           bar_bind_mount])
+    c = admin_client.create_container(name="volumes_test",
+                                      imageUuid=uuid,
+                                      startOnCreate=False,
+                                      dataVolumes=['/foo', bar_bind_mount])
 
-    c = internal_test_client.wait_success(c)
-    c = internal_test_client.wait_success(c.start())
+    c = admin_client.wait_success(c)
+    c = admin_client.wait_success(c.start())
 
     def check_mounts(container, expected_state=None, length=0):
         mounts = container.mounts()
@@ -611,19 +610,19 @@ def test_docker_mount_life_cycle(client, internal_test_client, docker_context):
 
     check_mounts(c, 'active', 2)
 
-    c = internal_test_client.wait_success(c.stop(remove=True))
+    c = admin_client.wait_success(c.stop(remove=True))
     check_mounts(c, 'inactive', 2)
 
-    c = internal_test_client.wait_success(c.restore())
+    c = admin_client.wait_success(c.restore())
     assert c.state == 'stopped'
     check_mounts(c, 'inactive', 2)
 
-    c = internal_test_client.wait_success(c.start())
+    c = admin_client.wait_success(c.start())
     assert c.state == 'running'
     check_mounts(c, 'active', 2)
 
-    c = internal_test_client.wait_success(c.stop(remove=True))
-    c = internal_test_client.wait_success(c.purge())
+    c = admin_client.wait_success(c.stop(remove=True))
+    c = admin_client.wait_success(c.purge())
     assert c.state == 'purged'
     check_mounts(c, 'removed', 2)
 
@@ -664,12 +663,12 @@ def _path_to_volume(volume):
     return mounted_path
 
 
-def _wait_until_stopped(container, internal_test_client, timeout=45):
+def _wait_until_stopped(container, admin_client, timeout=45):
         start = time.time()
-        container = internal_test_client.reload(container)
+        container = admin_client.reload(container)
         while container.state != 'stopped':
             time.sleep(.5)
-            container = internal_test_client.reload(container)
+            container = admin_client.reload(container)
             if time.time() - start > timeout:
                 raise Exception('Timeout waiting for container to stop.')
 

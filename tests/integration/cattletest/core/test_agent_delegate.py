@@ -35,7 +35,6 @@ def test_delegate_agent_create(client, internal_test_client, sim_context,
     create_and_activate(internal_test_client, 'networkService',
                         networkServiceProviderId=ni.id,
                         networkId=network.id)
-    client = internal_test_client
 
     c = client.create_container(imageUuid=sim_context['imageUuid'],
                                 networkIds=[network.id])

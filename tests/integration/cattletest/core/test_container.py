@@ -92,7 +92,7 @@ def test_container_create_only(admin_client, internal_test_client,
         "state": "inactive",
     })
 
-    return container
+    return admin_client.reload(container)
 
 
 def _assert_running(container, sim_context):
@@ -289,7 +289,8 @@ def test_container_remove(admin_client, internal_test_client, sim_context):
 
     container = wait_success(admin_client, container)
     container = internal_test_client.reload(container)
-    return _assert_removed(container)
+    container = _assert_removed(container)
+    return admin_client.reload(container)
 
 
 def test_container_delete_while_running(admin_client, internal_test_client,
@@ -385,19 +386,19 @@ def test_container_purge(admin_client, internal_test_client, sim_context):
     assert pool_maps[0].state == 'removed'
 
 
-def test_start_stop(internal_test_client, sim_context):
+def test_start_stop(admin_client, sim_context):
     uuid = "sim:{}".format(random_num())
 
-    container = internal_test_client.create_container(name="test",
+    container = admin_client.create_container(name="test",
                                                       imageUuid=uuid)
 
-    container = wait_success(internal_test_client, container)
+    container = wait_success(admin_client, container)
 
     for _ in range(5):
         assert container.state == 'running'
-        container = wait_success(internal_test_client, container.stop())
+        container = wait_success(admin_client, container.stop())
         assert container.state == 'stopped'
-        container = wait_success(internal_test_client, container.start())
+        container = wait_success(admin_client, container.start())
         assert container.state == 'running'
 
 

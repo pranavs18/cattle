@@ -111,7 +111,9 @@
         "containerExec.tty" : "cr",
         "containerExec.command" : "cr",
         
-        "containerExecOutput.*" : "r",
+        "containerExecOutput" : "r",
+        "containerExecOutput.token" : "r",
+        "containerExecOutput.url" : "r",
 
         "credential" : "cr",
         "credential.publicValue" : "cr",
@@ -152,6 +154,10 @@
         "image.physicalSizeMb" : "r",
         "image.virtualSizeMb" : "r",
         "image.url" : "cr",
+        
+        "imageStoragePoolMap" : "r",
+        "instanceHostMap" : "r",
+        "instanceStop" : "r",
 
         "instance" : "r",
         "instance.count" : "cr",
@@ -185,6 +191,16 @@
         "ipAssociation.role" : "cru",
 
         "metadataService.configDrive" : "cru",
+        
+        "mount" : "r",
+        "mount.instanceId": "r",
+        "mount.path" : "r",
+        "mount.permissions" : "r",
+        "mount.volumeId" : "r",
+        
+        "network" : "r",
+        
+        "networkServiceProvider" : "r",
 
         "offering" : "",
 
@@ -246,9 +262,11 @@
         "register.secretKey" : "r",
         "register.accessKey" : "r",
         
-        "schema.*": "r",
+        "schema\\.*" : "r",
         
-        "statsAccess.*" : "r",
+        "statsAccess" : "r",
+        "statsAccess.token" : "r",
+        "statsAccess.url" : "r",
            
         "subscribe" : "cr",
 
@@ -302,20 +320,6 @@
         "volume.uri" : "r",
         "volume.isHostPath" : "r",
         "volume.instanceId" : "r",
-        
-      
-        "imageStoragePoolMap" : "r",
-        "networkServiceProvider" : "r",
-        "instanceHostMap" : "r",
-        "instanceStop" : "r",
-
-        "mount" : "r",
-        "mount.instanceId": "r",
-        "mount.path" : "r",
-        "mount.permissions" : "r",
-        "mount.volumeId" : "r",
-        
-        "network" : "r",
         
         "zone" : "crud",
 		

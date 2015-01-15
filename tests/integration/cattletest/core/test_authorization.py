@@ -274,6 +274,10 @@ def test_process_instance_auth(admin_client, client):
         'data': 'r',
     })
 
+    auth_check(client.schema, 'processInstance', 'r', {
+
+    })
+
 
 def test_process_execution(admin_client, client):
     auth_check(admin_client.schema, 'processExecution', 'r', {

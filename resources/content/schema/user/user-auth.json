@@ -21,10 +21,10 @@
         "agent" : "r",
         "agent.managedConfig" : "",
         "agent.uri" : "",
-		
-		"apiKey" : "crud", 
-		"apiKey.publicValue" : "r", 
-
+        
+        "apiKey" : "crud", 
+        "apiKey.publicValue" : "r", 
+        
         "container" : "crud",
         "container.accountId": "r",
         "container.environment" : "cr",
@@ -58,7 +58,9 @@
         "containerExec.tty" : "cr",
         "containerExec.command" : "cr",
         
-        "containerExecOutput.*" : "r",
+        "containerExecOutput" : "r",
+        "containerExecOutput.token" : "r",
+        "containerExecOutput.url" : "r",
 
         "credential" : "r",
 
@@ -103,15 +105,23 @@
 
         "ipAddressAssociateInput" : "cr",
         "ipAddressAssociateInput.ipAddressId" : "cr",
+        
+        "mount" : "r",
+        "mount.instanceId" : "r",
+        "mount.path" : "r",
+        "mount.permissions" : "r",
+        "mount.volumeId" : "r",
 
         "network" : "r",
 
         "nic" : "r",
         "nic.macAddress" : "r",
 
-        "schema.*" : "r",
+        "schema\\.*" : "r",
         
-        "statsAccess.*" : "r",
+        "statsAccess" : "r",
+        "statsAccess.token" : "r",
+        "statsAccess.url" : "r",
       
         "subnet" : "r",
 
@@ -131,6 +141,9 @@
         "processExecution.processInstanceId" : "",
         
         "processInstance" : "r",
+        "processInstance.runningProcessServerId" : "",
+        "processInstance.resourceId" : "",
+        "processInstance.startProcessServerId" : "",
         
         "publish.id": "cr",
         "publish.name": "cr",
@@ -177,12 +190,6 @@
         "volume.virtualSizeMb" : "r",
         "volume.uri" : "r",
         "volume.isHostPath" : "r",
-
-        "mount" : "r",
-        "mount.instanceId" : "r",
-        "mount.path" : "r",
-        "mount.permissions" : "r",
-        "mount.volumeId" : "r",
 		
         "zone" : "r",
         "zone.accountId" : "r",
