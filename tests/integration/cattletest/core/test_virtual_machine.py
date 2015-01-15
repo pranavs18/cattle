@@ -54,7 +54,7 @@ def test_virtual_machine_network(internal_test_client, sim_context, network,
     subnet_plain_id = get_plain_id(internal_test_client, subnet)
     image_uuid = sim_context['imageUuid']
     vm = internal_test_client.create_virtual_machine(imageUuid=image_uuid,
-                                       networkIds=[network.id])
+                                                     networkIds=[network.id])
 
     vm = internal_test_client.wait_success(vm)
     assert vm.state == 'running'

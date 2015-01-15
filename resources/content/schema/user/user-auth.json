@@ -20,7 +20,7 @@
         
         "agent" : "r",
         "agent.managedConfig" : "",
-        "agent.uri" : "",
+        "agent.uri" : "", 
         
         "apiKey" : "crud", 
         "apiKey.publicValue" : "r", 

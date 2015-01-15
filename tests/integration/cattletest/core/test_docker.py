@@ -414,11 +414,11 @@ def test_docker_volumes(client, admin_client, docker_context):
     baz_bind_mount = '%s:/baz:ro' % baz_host_path
 
     c = admin_client.create_container(name="volumes_test",
-                                              imageUuid=uuid,
-                                              startOnCreate=False,
-                                              dataVolumes=['/foo',
-                                                           bar_bind_mount,
-                                                           baz_bind_mount])
+                                      imageUuid=uuid,
+                                      startOnCreate=False,
+                                      dataVolumes=['/foo',
+                                                   bar_bind_mount,
+                                                   baz_bind_mount])
 
     c = admin_client.wait_success(c)
     assert len(c.dataVolumes) == 3
@@ -476,9 +476,9 @@ def test_docker_volumes(client, admin_client, docker_context):
     assert baz_host_path in baz_vol.uri
 
     c2 = admin_client.create_container(name="volumes_from_test",
-                                               imageUuid=uuid,
-                                               startOnCreate=False,
-                                               dataVolumesFrom=[c.id])
+                                       imageUuid=uuid,
+                                       startOnCreate=False,
+                                       dataVolumesFrom=[c.id])
     c2 = admin_client.wait_success(c2)
     assert len(c2.dataVolumesFrom) == 1
     assert set(c2.dataVolumesFrom) == set([c.id])

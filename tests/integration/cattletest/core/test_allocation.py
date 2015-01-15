@@ -74,7 +74,8 @@ def test_spread(internal_test_client, sim_context, sim_context2, sim_context3):
 
     containers = []
     for _ in range(len(hosts) * count):
-        c = internal_test_client.create_container(imageUuid=sim_context['imageUuid'])
+        c = internal_test_client.create_container(
+            imageUuid=sim_context['imageUuid'])
         containers.append(c)
 
     containers = wait_all_success(internal_test_client, containers, timeout=60)

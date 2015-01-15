@@ -390,7 +390,7 @@ def test_start_stop(admin_client, sim_context):
     uuid = "sim:{}".format(random_num())
 
     container = admin_client.create_container(name="test",
-                                                      imageUuid=uuid)
+                                              imageUuid=uuid)
 
     container = wait_success(admin_client, container)
 
